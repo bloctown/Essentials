@@ -13,7 +13,7 @@ public interface SpawnerItemProvider extends Provider {
     Map<EntityType, String> entityToDisplayName = Stream.of("CAVE_SPIDER:Cave Spider", "PIG_ZOMBIE:Zombie Pigman",
         "ZOMBIFIED_PIGLIN:Zombie Piglin", "MAGMA_CUBE:Magma Cube", "ENDER_DRAGON:Ender Dragon",
         "MUSHROOM_COW:Mooshroom", "SNOWMAN:Snow Golem", "OCELOT:Ocelot", "IRON_GOLEM:Iron Golem", "WITHER:Wither",
-        "HORSE:Horse")
+        "HORSE:Horse", "SPIDER:Spider", "ZOMBIE:Zombie", "BLAZE:Blaze")
         .filter(s -> {
             try {
                 EntityType.valueOf(s);
@@ -31,13 +31,15 @@ public interface SpawnerItemProvider extends Provider {
     default ItemStack setDisplayName(final ItemStack is, final EntityType type) {
         final ItemMeta meta = is.getItemMeta();
         final String displayName;
+        final String displayNameCap;
         if (entityToDisplayName.containsKey(type)) {
             displayName = entityToDisplayName.get(type);
         } else {
             //noinspection deprecation
             displayName = type.getName();
         }
-        meta.setDisplayName(ChatColor.RESET + displayName + " Spawner");
+        displayNameCap = displayName.substring(0, 1).toUpperCase() + displayName.substring(1);
+        meta.setDisplayName(displayNameCap + " Spawner");
         is.setItemMeta(meta);
         return is;
     }
